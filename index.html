@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreator Porad NTM</title>
+    <style>
+        /* Domyślne zmienne CSS (motyw fioletowy) */
+        :root {
+            --bg-color: #f5efff;
+            --text-color: #333;
+            --header-color: #7B1FA2;
+            --button-bg: #9C27B0;
+            --button-hover-bg: #8E24AA;
+            --advice-bg: #ede7f6;
+            --advice-border: #7B1FA2;
+            --advice-text-color: #512DA8;
+        }
+
+        /* Definicje zmiennych dla motywu zielonego */
+        body.theme-green {
+            --bg-color: #e8f5e9;
+            --text-color: #333;
+            --header-color: #2E7D32;
+            --button-bg: #4CAF50;
+            --button-hover-bg: #43A047;
+            --advice-bg: #c8e6c9;
+            --advice-border: #2E7D32;
+            --advice-text-color: #1B5E20;
+        }
+
+        /* Definicje zmiennych dla motywu fioletowego */
+        body.theme-violet {
+            --bg-color: #f5efff;
+            --text-color: #333;
+            --header-color: #7B1FA2;
+            --button-bg: #9C27B0;
+            --button-hover-bg: #8E24AA;
+            --advice-bg: #ede7f6;
+            --advice-border: #7B1FA2;
+            --advice-text-color: #512DA8;
+        }
+
+        /* Definicje zmiennych dla motywu monochromatycznego */
+        body.theme-mono {
+            --bg-color: #f0f0f0;
+            --text-color: #333;
+            --header-color: #424242;
+            --button-bg: #616161;
+            --button-hover-bg: #424242;
+            --advice-bg: #e0e0e0;
+            --advice-border: #757575;
+            --advice-text-color: #212121;
+        }
+
+        /* Ogólne style, które używają zmiennych */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 20px;
+            transition: background-color 0.5s ease;
+        }
+        .main-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative; /* Dodane dla pozycjonowania logo */
+        }
+        .logo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 80px; /* Dostosuj rozmiar logo */
+            height: auto;
+        }
+        h1 {
+            color: var(--header-color);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .content-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        button {
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            flex-grow: 1;
+            max-width: 200px;
+        }
+        .content-buttons button {
+            background-color: var(--button-bg);
+        }
+        .content-buttons button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        #adviceDisplay {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--advice-bg);
+            border-left: 5px solid var(--advice-border);
+            border-radius: 5px;
+            font-size: 20px;
+            color: var(--advice-text-color);
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+            text-align: left;
+        }
+
+        /* Style dla sekcji z przyciskami motywów */
+        .theme-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .theme-section h2 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .theme-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .theme-buttons button {
+            padding: 8px 15px;
+            font-size: 16px;
+            max-width: 200px;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* Subtelne kolory dla przycisków motywów (niezmienne) */
+        .theme-buttons .green-btn {
+            background-color: #81C784;
+        }
+        .theme-buttons .green-btn:hover {
+            background-color: #66BB6A;
+        }
+        .theme-buttons .violet-btn {
+            background-color: #CE93D8;
+        }
+        .theme-buttons .violet-btn:hover {
+            background-color: #BA68C8;
+        }
+        .theme-buttons .mono-btn {
+            background-color: #BDBDBD;
+        }
+        .theme-buttons .mono-btn:hover {
+            background-color: #9E9E9E;
+        }
+
+        /* Styl dla przycisku linkującego do poradnika */
+        .download-button {
+            margin-top: 30px;
+            padding: 15px 30px;
+            background-color: #FF7043;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .download-button:hover {
+            background-color: #FB8C00;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="theme-violet">
+    <div class="main-container">
+       <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="46.9194mm" height="17.6388mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 4692 1764"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:#F9423A}
+    .fil1 {fill:#141B4D;fill-rule:nonzero}
+    .fil2 {fill:#141B4D;fill-rule:nonzero}
+   ]]>
+  </style>
+ </defs>
+ <g id="Warstwa_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <path class="fil0" d="M2535 1327c416,347 1144,28 1703,78l0 318 -1703 0c0,-106 0,-290 0,-396z"/>
+  <path class="fil1" d="M1202 1297c0,-227 -138,-320 -423,-378 -194,-40 -292,-32 -292,-88 0,-33 35,-45 103,-45l323 0c151,0 224,-43 224,-149 0,-113 -93,-181 -267,-181l-345 0c-292,0 -464,153 -464,398 0,234 146,325 454,368 169,22 254,30 254,85 0,40 -45,66 -128,66l-383 0c-149,0 -224,55 -224,161 0,121 90,189 267,189l372 0c346,0 529,-154 529,-426zm1286 -282c0,-358 -244,-582 -612,-582 -383,0 -652,275 -652,655 0,219 75,385 224,504 156,123 330,149 564,149 317,0 469,-51 469,-200 0,-100 -81,-163 -227,-163l-333 0c-163,0 -249,-56 -267,-174l628 0c158,0 206,-40 206,-189zm-413 -58l-431 0c5,-141 91,-224 219,-224 129,0 212,80 212,206 0,8 0,13 0,18zm1628 381l0 -434c0,-310 -131,-458 -408,-458 -148,0 -269,48 -375,146 -15,-96 -78,-146 -184,-146 -136,0 -204,70 -204,204 0,190 0,380 0,570 105,108 365,175 408,179l0 -324c0,-201 38,-297 191,-297 114,0 167,66 167,197 0,140 0,281 0,422 72,-9 251,-35 405,-59zm535 -68l0 -625c0,-126 -76,-199 -204,-199 -129,0 -204,73 -204,199 0,224 0,449 0,673 89,-13 248,-41 408,-48z"/>
+  <path class="fil0" d="M4024 23c134,0 242,82 242,183 0,101 -108,184 -242,184 -134,0 -242,-83 -242,-184 0,-101 108,-183 242,-183z"/>
+  <path class="fil2" d="M4510 446c26,0 50,6 74,19 23,13 42,31 55,55 13,24 20,48 20,74 0,26 -7,51 -20,74 -13,24 -31,42 -55,55 -23,13 -48,20 -74,20 -25,0 -50,-7 -74,-20 -23,-13 -41,-31 -55,-55 -13,-23 -19,-48 -19,-74 0,-26 6,-50 20,-74 13,-24 32,-42 55,-55 23,-13 48,-19 73,-19zm1 29c-21,0 -40,5 -59,15 -19,10 -34,25 -44,44 -11,19 -17,40 -17,60 0,21 6,41 16,60 11,19 25,34 44,44 19,11 39,16 60,16 20,0 40,-5 59,-16 19,-10 34,-25 44,-44 11,-19 16,-39 16,-60 0,-20 -5,-41 -16,-60 -11,-19 -26,-34 -45,-44 -18,-10 -38,-15 -58,-15zm-68 199l0 -158 32 0c30,0 47,0 51,1 10,1 19,3 24,6 6,3 11,8 15,15 4,7 6,14 6,23 0,11 -4,21 -11,29 -7,8 -18,13 -31,15 4,2 8,4 11,6 2,2 6,6 10,12 2,1 5,8 12,19l19 32 -40 0 -13 -26c-9,-17 -16,-28 -22,-32 -6,-5 -13,-7 -22,-7l-9 0 0 65 -32 0zm32 -90l13 0c19,0 30,0 35,-2 4,-1 8,-4 10,-7 3,-4 4,-8 4,-12 0,-5 -1,-9 -4,-12 -2,-4 -6,-6 -10,-7 -5,-2 -17,-3 -35,-3l-13 0 0 43z"/>
+ </g>
+</svg>
+
+
+        <h1>Kreator Porad na temat NTM</h1>
+
+        <label for="category">Wybierz kategorię porady:</label>
+        <select id="category">
+            <option value="dieta_styl_zycia">Dieta i Styl Życia</option>
+            <option value="cwiczenia_dna_miednicy">Ćwiczenia Mięśni Dna Miednicy</option>
+            <option value="higiena_produkty">Higiena i Produkty Chłonne</option>
+            <option value="pomoc_medyczna">Kiedy Szukać Pomocy Medycznej</option>
+            <option value="prawidlowe_nawyki_w_toalecie">Prawidłowe Nawyki w Toalecie</option>
+        </select>
+
+        <div class="content-buttons">
+            <button onclick="generateAdvice()">Wygeneruj Poradę</button>
+        </div>
+
+        <div id="adviceDisplay">
+            Wybierz kategorię i kliknij "Wygeneruj Poradę", aby otrzymać wskazówkę dotyczącą NTM.
+        </div>
+    </div>
+
+    <div class="theme-section">
+        <h2>Zmień kolor kreatora</h2>
+        <div class="theme-buttons">
+            <button onclick="setTheme('green')" class="green-btn">Motyw Zielony</button>
+            <button onclick="setTheme('violet')" class="violet-btn">Motyw Fioletowy</button>
+            <button onclick="setTheme('mono')" class="mono-btn">Motyw Monochromatyczny</button>
+        </div>
+    </div>
+
+    <a href="https://kontynentkobiet.pl/zamow-poradnik-ebook" target="_blank" class="download-button">
+        Pobierz cały poradnik
+    </a>
+
+    <script>
+        // --- Baza danych porad (wygenerowane na podstawie załączonego poradnika) ---
+        const contentData = {
+            dieta_styl_zycia: [
+                "Ogranicz spożycie kofeiny (kawa, herbata, napoje energetyczne) i alkoholu, ponieważ mogą działać moczopędnie i podrażniać pęcherz.",
+                "Unikaj pikantnych potraw, cytrusów i napojów gazowanych, które mogą nasilać objawy NTM.",
+                "Pij odpowiednią ilość wody w ciągu dnia, ale staraj się unikać dużych ilości płynów tuż przed snem.",
+                "Utrzymuj zdrową wagę ciała. Nadwaga może zwiększać nacisk na pęcherz i mięśnie dna miednicy.",
+                "Włącz do diety produkty bogate w błonnik (min. 25g dziennie), aby zapobiegać zaparciom, które mogą obciążać dno miednicy.",
+                "Regularna, umiarkowana aktywność fizyczna (np. spacery, nordic walking, pływanie) wspiera ogólne zdrowie i funkcjonowanie układu moczowego.",
+                "Monitoruj, jakie pokarmy i napoje wpływają na Twoje objawy NTM, prowadząc dzienniczek.",
+                "Pod żadnym pozorem nie ograniczaj picia wody, jeśli doświadczasz NTM, gdyż zagęszczony mocz może podrażniać pęcherz.",
+                "Palenie papierosów zakwasza mocz i sprawia, że staje się on drażniący dla pęcherza, a towarzyszący kaszel osłabia mięśnie dna miednicy.",
+                "Unikaj nadmiernego wciągania brzucha i noszenia zbyt ciasnych ubrań, aby nie zwiększać ciśnienia w jamie brzusznej.",
+                "Postaraj się jak najmniej czasu spędzać w pozycji siedzącej. Często zmieniaj ułożenie ciała i wykonuj proste ruchy.",
+                "Włącz do diety gruszki, żurawinę, banany, ziemniaki, pestki dyni, duszone chude mięso, orzechy i jajka.",
+                "Nie przesiaduj długo w toalecie, gdyż miednica jest wtedy rozciągnięta i obciążona.",
+                "Pamiętaj o regularnym opróżnianiu pęcherza, nie czekaj na ostatnią chwilę.",
+                "Dbaj o prawidłową postawę ciała, ponieważ nieodpowiednia postawa może przeciążać mięśnie dna miednicy.",
+                "Zalecana dzienna ilość płynów to 33 ml na kilogram masy ciała, wliczając w to płyny z pokarmów.",
+                "Podczas kaszlu i kichania skręć tułów i podciągnij mięśnie dna miednicy, aby chronić je przed obciążeniem.",
+                "Zrezygnuj z aktywności fizycznej, która nasila nietrzymanie moczu (np. bieganie, podskoki), do czasu wyleczenia i konsultacji ze specjalistą."
+            ],
+            cwiczenia_dna_miednicy: [
+                "Mięśnie dna miednicy (tzw. mięśnie Kegla) odpowiadają za podparcie organów, kontrolę wydalania moczu i kału, stabilizację tułowia oraz wspomaganie funkcji seksualnych.",
+                "Prawidłowe napięcie i szybki skurcz mięśni dna miednicy jest kluczowy np. przed kichaniem czy kaszlem, aby zapobiec wyciekowi moczu.",
+                "Trening mięśni dna miednicy musi być przemyślany i dopasowany do konkretnego przypadku NTM. Najlepiej udać się na badanie w celu oceny ich funkcjonowania.",
+                "Ważne jest, aby podczas ćwiczeń MDM nie napinać mięśni pośladków, brzucha ani przywodzicieli.",
+                "Wykonuj ćwiczenia oddechowe, które wspomagają pracę przepony i dna miednicy, wpływając na ciśnienie śródbrzuszne.",
+                "Zadbaj o swoje dno miednicy, zaczynając od prawidłowej postawy, odpowiedniego oddychania i nawyków wspierających jego funkcje.",
+                "Jeśli mięśnie dna miednicy są nadreaktywne (zbyt napięte), mogą powodować trudności z wypróżnieniem i uczucie ciągłego parcia.",
+                "Prawidłowo działające mięśnie dna miednicy zapobiegają nietrzymaniu moczu, utrzymując cewkę moczową we właściwym miejscu.",
+                "Dno miednicy znosi obciążenie przez całe życie, dlatego warto starannie się o nie zatroszczyć, niezależnie od wieku.",
+                "Warto nauczyć się lokalizować mięśnie dna miednicy, wyobrażając sobie zbieranie ziarenek ryżu cewką moczową, zatrzymywanie wiatru lub podciąganie tamponu.",
+                "Nie używaj kulek gejszy do samodzielnego treningu, ponieważ mogą prowadzić do przepracowania mięśni i utraty elastyczności.",
+                "Pozycje odwrócone (np. w jodze, gdzie miednica jest wyżej niż barki) mogą być znakomitą formą aktywności i relaksu dla dna miednicy.",
+                "Zawsze, gdy zaobserwujesz problem z NTM, skontaktuj się ze specjalistą, bo dolegliwości mogą wystąpić także u młodszych osób.",
+                "Pamiętaj, że NTM często jest wynikiem innych dysfunkcji w ciele, dlatego poradź się specjalisty.",
+                "W czasie ciąży i połogu szczególnie dbaj o mięśnie dna miednicy, wprowadzając dobre nawyki i odpowiednie pozycje.",
+                "Nie noś poporodowych pasów uciskowych, ponieważ uciskają i nie pozwalają mięśniom naturalnie pracować i wzmocnić się.",
+                "Staraj się unikać siedzenia, spędzaj czas w pozycji leżącej i stojącej, by zmniejszyć obciążenie dna miednicy.",
+                "Zawsze konsultuj z fizjoterapeutą uroginekologicznym plan ćwiczeń dla MDM, aby był dopasowany do Twoich potrzeb.",
+                "Dno miednicy jest częścią mechanizmu stabilizującego tułów, dlatego jego prawidłowe funkcjonowanie jest kluczowe dla całego aparatu ruchu.",
+                "Zaburzenia równowagi w rejonie miednicy mogą powodować obciążenie innych partii ciała, w tym kręgosłupa lędźwiowego."
+            ],
+            higiena_produkty: [
+                "Nie używaj podpasek menstruacyjnych do wchłaniania moczu, ponieważ nie są do tego przystosowane; sięgnij po specjalistyczne wkładki urologiczne Seni Lady.",
+                "Wybierz wkładki urologiczne Seni Lady i majtki chłonne Seni Lady Pants, które zapewniają suchość, kontrolują zapach i są delikatne dla skóry.",
+                "Seni Lady oferuje wkładki o różnym poziomie chłonności, co pozwala dobrać produkt do indywidualnych potrzeb. Poziom chłonności oznaczony jest liczbą kropelek na opakowaniu.",
+                "Wkładki Seni Lady są dostępne od ultracienkich (Slim Micro, Micro Plus) na kropelkowe NTM, po bardziej chłonne (Mini, Mini Plus, Normal) na lekkie NTM.",
+                "Na średnie NTM polecane są wkładki o większej powierzchni (Seni Lady Slim Extra, Extra Plus, Super, Plus) lub majtki chłonne Seni Lady Pants.",
+                "Dla całonocnej ochrony sięgnij po wkładki Seni Lady Super Night, które są najbardziej chłonne i poszerzone w tylnej części.",
+                "Wybierając produkt chłonny, weź pod uwagę poziom nietrzymania moczu, częstotliwość i objętość wycieków.",
+                "Produkty Seni Lady minimalizują nieprzyjemny zapach dzięki specjalnym mikrogranulkom we wkładzie chłonnym.",
+                "Męskie wyroby chłonne Seni Man dostępne są w różnych kształtach i poziomach chłonności, od wkładek po majtki chłonne.",
+                "Wkładki urologiczne mocuje się do bielizny za pomocą paska klejowego, a bielizna powinna przylegać do ciała.",
+                "Produkty chłonne są zalecane na wszystkich etapach leczenia NTM.",
+                "Dofinansowanie NFZ obejmuje niektóre rozmiary wkładek urologicznych Seni Lady i Seni Man, oraz majtki chłonne.",
+                "O dofinansowanie mogą ubiegać się osoby z pęcherzem neurogennym, zaburzeniami zwieraczy, NTM związanym z chorobą nowotworową lub neurologiczną.",
+                "Do ubiegania się o dofinansowanie potrzebne jest zlecenie od lekarza (POZ, ginekolog, urolog, neurolog, geriatra) lub pielęgniarki/położnej.",
+                "Poczucie suchości i dyskrecja to kluczowe cechy dobrego zabezpieczenia."
+            ],
+            pomoc_medyczna: [
+                "Skontaktuj się ze specjalistą (ginekolog, urolog, lekarz POZ, neurolog, fizjoterapeuta uroginekologiczny/urologiczny, położna), gdy tylko zaobserwujesz problem z NTM.",
+                "Każde niekontrolowane oddawanie moczu, nawet najmniejsze, jest powodem do kontaktu ze specjalistą.",
+                "Przed wizytą u specjalisty zanotuj odpowiedzi na pytania dotyczące częstotliwości oddawania moczu w dzień/noc, incydentów wycieku moczu (w tym podczas aktywności fizycznej), uczucia nagłego parcia i kiedy wystąpiły pierwsze objawy NTM.",
+                "Zabierz ze sobą na wizytę dzienniczek mikcji, który pomoże w diagnostyce i ocenie postępów leczenia.",
+                "Poinformuj specjalistę o bólu podczas oddawania moczu, krwiomoczu, infekcjach układu moczowego, słabym strumieniu moczu, trudnościach w rozpoczęciu oddawania moczu, konieczności parcia, czy uczuciu niepełnego opróżnienia pęcherza.",
+                "Zapisz listę pytań, które chcesz zadać lekarzowi, np. o możliwości leczenia, nowe metody, co możesz zrobić, by wesprzeć leczenie, czego unikać, czy inkontynencja może być wyleczona.",
+                "Im wcześniej zaczniesz terapię NTM, tym większe masz szanse na całkowite wyleczenie.",
+                "Leczenie NTM zależy od rodzaju i przyczyn, może obejmować zmianę nawyków, fizjoterapię, leki lub operację. Nie podejmuj terapii samodzielnie.",
+                "Leczenie zachowawcze NTM obejmuje zmianę stylu życia, rezygnację ze złych nawyków i niwelowanie czynników ryzyka.",
+                "Fizjoterapia i fizykoterapia wykorzystują masaże, ćwiczenia MDM, elektrostymulację czy biofeedback do wzmocnienia mięśni i poprawy kontroli.",
+                "Wspomaganie dietą, np. redukcja masy ciała i zmiana nawyków żywieniowych, może zredukować objawy NTM.",
+                "Farmakoterapia i terapia hormonalna mogą być stosowane wyłącznie po konsultacji z lekarzem w niektórych rodzajach NTM.",
+                "Pessaroterapia polega na noszeniu w pochwie specjalnego krążka lub kostki i jest skuteczna przy wysiłkowym NTM i zaburzeniach statyki narządów miednicy.",
+                "Leczenie operacyjne koryguje zaburzenia statyki narządów płciowych, np. poprzez implantację taśmy pod cewką moczową.",
+                "W przypadku NTM po porodzie, jeśli dolegliwości nie ustępują samoistnie, warto wspomóc się terapią.",
+                "Mężczyźni z NTM powinni skonsultować się z urologiem (np. w przypadku problemów z prostatą) lub fizjoterapeutą uroginekologicznym.",
+                "Mężczyźni z łagodnym rozrostem prostaty powinni regularnie wykonywać badanie PSA w celu wykrycia nowotworu.",
+                "Jeśli mężczyzna ma NTM po operacji prostaty, fizjoterapeuta może zalecić ćwiczenia usprawniające mięśnie.",
+                "W przypadku bardzo niewielkiej ilości moczu lub braku oddawania moczu, natychmiast skontaktuj się z lekarzem.",
+                "Fundacja TZMO i Kontynent Kobiet oferują rzetelną wiedzę o NTM i wskazówki, u jakiego specjalisty szukać wsparcia."
+            ],
+            prawidlowe_nawyki_w_toalecie: [
+                "Usiądź prosto na toalecie, stopy płasko oparte na podłożu, nogi lekko rozstawione, kręgosłup wyprostowany.",
+                "Rozluźnij się i bez pośpiechu oddawaj mocz, zachowując wyprostowane plecy, co zapewni pełne opróżnienie pęcherza.",
+                "Nie przyjmuj pozycji półsiedzącej (tzw. narciarza) podczas oddawania moczu, ponieważ napina mięśnie i utrudnia opróżnienie pęcherza.",
+                "Podczas oddawania kału pochyl się, lekko zaokrąglając plecy, i ułóż nogi na stołku (ok. 20-30 cm wysokości), aby kolana były powyżej bioder.",
+                "Pozycja kuczna przy oddawaniu kału pozwala na wypróżnienie bez parcia.",
+                "Nie wkładaj wysiłku w wypróżnienie i nie przyj, gdyż parcie obniża mięśnie dna miednicy.",
+                "Daj sobie czas na naturalne oddanie moczu lub kału; weź głęboki wdech i rozluźnij mięśnie dna miednicy.",
+                "Nie przesiaduj długo w toalecie, aby nie rozciągać i nie obciążać mięśni miednicy.",
+                "Nie zatrzymuj strumienia moczu podczas oddawania; jest to nieprawidłowa praktyka, która może przyczynić się do zapalenia pęcherza.",
+                "Nie korzystaj z toalety „na zapas”, gdyż odzwyczaja to organizm od kontrolowania oddawania moczu i może zmniejszyć pojemność pęcherza.",
+                "Jeśli czujesz częste parcie na mocz, ale pęcherz jest tylko częściowo wypełniony, spróbuj poczekać i wykonaj ćwiczenia oddechowe.",
+                "Nie wydmuchuj nosa podczas oddawania moczu, ponieważ wytwarzane ciśnienie wzmaga parcie, co jest negatywnym zjawiskiem.",
+                "Dobra pozycja w toalecie sprzyja również całkowitemu opróżnieniu jelita, co zapobiega stanom zapalnym.",
+                "Pamiętaj, że prawidłowe oddawanie moczu to około 250 ml co 3 godziny, 6-8 razy dziennie, bez parcia i z ciągłym strumieniem.",
+                "W nocy dopuszczalne jest oddawanie moczu maksymalnie raz.",
+                "Prowadzenie dzienniczka mikcji jest bardzo przydatnym narzędziem do monitorowania funkcjonowania pęcherza.",
+                "Jeśli w dzienniczku mikcji obserwujesz częste ilości moczu poniżej 250 ml lub powyżej 550 ml, to może wskazywać na problemy.",
+                "Nie prowadź dzienniczka mikcji bezpośrednio przed miesiączką lub w czasie jej trwania, ze względu na częstsze korzystanie z toalety.",
+                "Utrzymuj proste plecy podczas oddawania moczu, aby cewka moczowa była skierowana w dół.",
+                "Wstrzymaj się od oddawania moczu na zapas."
+            ]
+        };
+
+        function generateAdvice() {
+            const category = document.getElementById('category').value;
+            const adviceDisplay = document.getElementById('adviceDisplay');
+
+            const adviceList = contentData[category];
+
+            if (adviceList && adviceList.length > 0) {
+                const randomIndex = Math.floor(Math.random() * adviceList.length);
+                adviceDisplay.textContent = adviceList[randomIndex];
+            } else {
+                adviceDisplay.textContent = "Brak porad dla tej kategorii.";
+            }
+        }
+
+        function setTheme(themeName) {
+            const body = document.body;
+            body.classList.remove('theme-green', 'theme-violet', 'theme-mono');
+            body.classList.add(`theme-${themeName}`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTheme('violet');
+        });
+    </script>
+</body>
+</html>
